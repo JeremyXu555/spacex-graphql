@@ -1,7 +1,19 @@
 import * as express from "express"; 
 import * as graphqlHTTP from "express-graphql";
 import * as mongoose from "mongoose";
-import { schema } from "./schema";
+import schemas from "./schema";
+import resolvers from "./resolver";
+import {
+  makeExecutableSchema,
+  mergeSchemas,
+  addResolveFunctionsToSchema,
+} from 'graphql-tools';
+import { GraphQLSchema } from "graphql";
+
+const schema: GraphQLSchema = mergeSchemas({
+	schemas,
+	resolvers
+});
 
 const app = express();
 
