@@ -18,5 +18,6 @@ type Mutation {
         launch_year: Int!,
         mission_name: String!,
         launch_success: Boolean!,
+        rocket: CreateRocketInput!,
     ): Launch
 }
