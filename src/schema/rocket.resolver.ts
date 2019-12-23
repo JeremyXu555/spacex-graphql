@@ -1,5 +1,5 @@
 // import { pubsub } from "../server";
-import { rocketController } from "../rocket/rocket.controller";
+import { rocketController } from "../db/controllers";
 
 const LAUNCH_CREATED = "POST_ADDED";
 

@@ -1,11 +1,12 @@
 # import Rocket from "rocket.graphql"
 
 type Launch {
+    id: Int!,
     flight_number: Int!,
     launch_year: Int!,
     mission_name: String!,
     launch_success: Boolean!,
-    rocket: Rocket,
+    rocketId: Int!,
 }
 
 type Query {
@@ -18,6 +19,6 @@ type Mutation {
         launch_year: Int!,
         mission_name: String!,
         launch_success: Boolean!,
-        rocket: CreateRocketInput!,
+        rocket: Int!,
     ): Launch
 }

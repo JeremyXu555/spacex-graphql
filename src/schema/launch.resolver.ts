@@ -1,5 +1,5 @@
 // import { pubsub } from "../server";
-import { launchController } from "../launch/launch.controller";
+import { launchController } from "../db/controllers";
 
 const LAUNCH_CREATED = "POST_ADDED";
 
