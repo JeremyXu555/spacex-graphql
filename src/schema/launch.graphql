@@ -2,11 +2,11 @@
 
 type Launch {
     id: Int!,
-    flight_number: Int!,
+    flight_number: String!,
     launch_year: Int!,
     mission_name: String!,
     launch_success: Boolean!,
-    rocketId: Int!,
+    rocket_id: Int!,
 }
 
 type Query {
@@ -15,10 +15,11 @@ type Query {
 
 type Mutation {
     createLaunch(
-        flight_number: Int!,
+        id: Int!,
+        flight_number: String!,
         launch_year: Int!,
         mission_name: String!,
         launch_success: Boolean!,
-        rocket: Int!,
+        rocket_id: Int!,
     ): Launch
 }
