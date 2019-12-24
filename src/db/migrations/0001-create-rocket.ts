@@ -10,6 +10,10 @@ export const up = async (queryInterface: QueryInterface): Promise<void> => {
                 primaryKey: true,
                 allowNull: false,
             },
+            launch_ids: {
+                type: new DataTypes.ARRAY(DataTypes.INTEGER),
+                allowNull: false,
+            },
             active: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,

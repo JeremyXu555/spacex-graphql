@@ -7,6 +7,7 @@ import { Model, Rocket } from ".";
 
 export class Launch extends Model {
     public id!: number;
+    public rocket_id!: number;
     public flight_number!: string;
     public launch_year!: number;
     public mission_name!: string;
@@ -22,6 +23,16 @@ export class Launch extends Model {
                 autoIncrement: true,
                 primaryKey: true,
                 allowNull: false,
+            },
+            rocket_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: 'Rockets',
+                    key: 'id',
+                },
+                onUpdate: 'cascade',
+                onDelete: 'cascade',
             },
             flight_number: {
                 type: new DataTypes.STRING(128),

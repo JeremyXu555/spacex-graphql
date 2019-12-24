@@ -8,6 +8,7 @@ import { Model, Launch } from ".";
 export class Rocket extends Model {
     public id!: number;
     public active!: boolean;
+    public launch_ids!: number[];
     public stages: number;
     public boosters: number;
     public cost_per_launch: string;
@@ -25,6 +26,10 @@ export class Rocket extends Model {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
+                allowNull: false,
+            },
+            launch_ids: {
+                type: new DataTypes.ARRAY(DataTypes.INTEGER),
                 allowNull: false,
             },
             active: {
@@ -69,20 +74,4 @@ export class Rocket extends Model {
         });
     }
 
-    public static associate(
-        models: {
-            Rocket: typeof Rocket;
-            Launch: typeof Launch;
-        },
-    ):void {
-        models.Rocket.hasMany(models.Launch, {
-            foreignKey: {
-                name: 'launch_id',
-                allowNull: false,
-            },
-            as: 'Launch',
-            onUpdate: 'cascade',
-            onDelete: 'cascade',
-        });
-    }
 }
