@@ -14,6 +14,8 @@ import { importSchema } from 'graphql-import';
 import { buildFederatedSchema } from '@apollo/federation';
 import { launchResolver } from './launch.resolver';
 import { rocketResolver } from './rocket.resolver';
+import { dragonResolver } from './dragon.resolver';
+
 
 
 async function schemaForTypeDef(filename: string): Promise<GraphQLSchema> {
@@ -36,7 +38,7 @@ export async function generateSchema(): Promise<GraphQLSchema> {
     const schemaSDL = gql`${printSchema(mergedSchemas)}`;
     const schema = buildFederatedSchema([schemaSDL]);
 
-    const resolvers = [launchResolver, rocketResolver];
+    const resolvers = [launchResolver, rocketResolver, dragonResolver];
 
 
     resolvers.forEach((resolver): void => {
