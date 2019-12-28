@@ -1,14 +1,14 @@
-// import { pubsub } from "../server";
+import pubsub from "../pubsub";
 import { launchController } from "../db/controllers";
 
-const LAUNCH_CREATED = "POST_ADDED";
+const CREATE_LAUNCH = "CREATE_LAUNCH";
 
 const launchResolver = {
-	// Subscription: {
-	// 	launchAdded: {
-	// 		subscribe: () => pubsub.asyncIterator([LAUNCH_CREATED])
-	// 	}
-	// },
+	Subscription: {
+		launchAdded: {
+			subscribe: () => pubsub.asyncIterator(CREATE_LAUNCH)
+		}
+	},
 	Query: {
 		launches(root: any, args: any, context: any) {
 			return launchController.launches();
@@ -16,7 +16,7 @@ const launchResolver = {
 	},
 	Mutation: {
 		createLaunch(root: any, args: any, context: any) {
-			// pubsub.publish(LAUNCH_CREATED, { launchAdded: args });
+			pubsub.publish(CREATE_LAUNCH, { launchAdded: args });
 			return launchController.createLaunch(args);
 		}
 	}
