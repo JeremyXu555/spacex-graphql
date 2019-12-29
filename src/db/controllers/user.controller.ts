@@ -2,9 +2,10 @@ import { User } from "../models";
 import { hash, compare } from "bcryptjs";
 import {
     createAccessToken,
-    createRefreshToken,
-    LoginResponse
+    LoginResponse,
+    sendRefreshToken
 } from "../../auth";
+import { MyContext } from "../../MyContext";
 
 
 export const userController = {
@@ -24,7 +25,7 @@ export const userController = {
             });
     },
 
-    login: async (user: User): Promise<LoginResponse> => {
+    login: async (user: User, context: MyContext): Promise<LoginResponse> => {
         const user_db = await User.findOne({ where: { email: user.email } });
         if (!user_db) {
             throw new Error("Could not find the user");
@@ -35,8 +36,10 @@ export const userController = {
             throw new Error("Wrong password");
         }
 
+        sendRefreshToken(context.res, user);
+
         return {
-            access_token: createRefreshToken(user)
+            access_token: createAccessToken(user)
         }
     }
 };

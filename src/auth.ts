@@ -1,5 +1,6 @@
 import { User } from "./db/models";
 import { sign } from "jsonwebtoken";
+import {Response} from "express";
 
 export const createAccessToken = (user: User) => {
     return sign(
@@ -9,12 +10,14 @@ export const createAccessToken = (user: User) => {
     );
 }
 
-export const createRefreshToken = (user: User) => {
-    return sign(
+export const sendRefreshToken = (res: Response, user: User) => {
+    const refreshToken = sign(
         { userId: user.id },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" }
     );
+
+    res.cookie("jid", refreshToken, { httpOnly: true });
 }
 
 export interface LoginResponse {

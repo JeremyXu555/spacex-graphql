@@ -12,7 +12,7 @@ const userResolver = {
 			return userController.createUser(args);
 		},
 		login(root: any, args: User, context: any) {
-			return userController.login(args);
+			return userController.login(args, context);
 		}
 	}
 };
