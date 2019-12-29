@@ -9,3 +9,4 @@ export class Model extends SequelizeModel {
 export { Launch } from "./launch";
 export { Rocket } from "./rocket";
 export { Dragon } from "./dragon";
+export { User } from "./user";

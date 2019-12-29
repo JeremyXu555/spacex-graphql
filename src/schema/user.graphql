@@ -1,0 +1,24 @@
+type User {
+    email: String!,
+    password: String!
+}
+
+type Query {
+    users: [User]
+}
+
+type LoginResponse {
+    access_token: String!
+}
+
+type Mutation {
+    createUser (
+        email: String!,
+        password: String!,
+    ): User
+
+    login(
+        email: String!,
+        password: String!,
+    ): LoginResponse
+}
