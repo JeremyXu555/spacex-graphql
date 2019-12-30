@@ -16,6 +16,9 @@ const rocketResolver = {
 	},
 	Mutation: {
 		createRocket(root: any, args: any, context: any) {
+			if(!context.headers['user']) {
+				throw new Error('User not authenticated');
+			}
 			// pubsub.publish(LAUNCH_CREATED, { rocketAdded: args });
 			return rocketController.createRocket(args);
 		}

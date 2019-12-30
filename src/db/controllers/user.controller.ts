@@ -11,7 +11,7 @@ import { MyContext } from "../../MyContext";
 export const userController = {
     users: () => User.findAll(),
 
-    createUser: async (user: User) => {
+    createUser: async (user: User, context: MyContext) => {
         const hashedPassword = await hash(user.password, 12);
         return User
             .findOrCreate({

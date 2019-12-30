@@ -16,6 +16,9 @@ const launchResolver = {
 	},
 	Mutation: {
 		createLaunch(root: any, args: any, context: any) {
+			if(!context.headers['user']) {
+				throw new Error('User not authenticated');
+			}
 			pubsub.publish(CREATE_LAUNCH, { launchAdded: args });
 			return launchController.createLaunch(args);
 		}
