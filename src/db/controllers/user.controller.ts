@@ -13,6 +13,10 @@ export const userController = {
 
     createUser: async (user: User, context: MyContext) => {
         const hashedPassword = await hash(user.password, 12);
+
+        const user_now = await User.findOne({ where: { email: user.email } });
+        if (user_now)  throw new Error(`${user.email} already exists`);
+
         return User
             .findOrCreate({
                 where: {
