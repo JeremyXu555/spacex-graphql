@@ -20,6 +20,11 @@ export const up = async (queryInterface: QueryInterface): Promise<void>  => {
                 type: new DataTypes.STRING(128),
                 allowNull: false,
             },
+            confirmed:
+            {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
             created_at: {
                 allowNull: false,
                 type: DataTypes.DATE,

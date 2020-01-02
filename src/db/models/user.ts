@@ -4,22 +4,24 @@ import {
 } from "sequelize";
 
 import { Model } from ".";
+import { v4 } from "uuid";
 
 export class User extends Model {
-    public id!: number;
+    public id!: string;
     public email: string;
     public password: string;
+    public confirmed: boolean;
 
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
 
-    public static init({}, { sequelize }: { sequelize: Sequelize }):void {
+    public static init({ }, { sequelize }: { sequelize: Sequelize }): void {
         super.init({
             id: {
-                type: DataTypes.INTEGER,
-                autoIncrement: true,
+                type: DataTypes.UUID,
                 primaryKey: true,
                 allowNull: false,
+                defaultValue: v4(),
             },
             email: {
                 type: new DataTypes.STRING(128),
@@ -30,6 +32,11 @@ export class User extends Model {
                 type: new DataTypes.STRING(128),
                 allowNull: false,
             },
+            confirmed:
+            {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            }
         }, {
             sequelize,
             modelName: 'User',

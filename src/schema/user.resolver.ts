@@ -9,10 +9,13 @@ const userResolver = {
 	},
 	Mutation: {
 		createUser(root: any, args: any, context: any) {
-			if(!context.headers['user']) {
+			if(!context.req.headers['user']) {
 				throw new Error('User not authenticated');
 			}
 			return userController.createUser(args, context);
+		},
+		deactivateUser(root: any, args: User, context: any) {
+			return userController.deactivate_user(args);
 		},
 		login(root: any, args: User, context: any) {
 			return userController.login(args, context);

@@ -9,7 +9,9 @@ import { createServer } from "http";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import expressPlayground from "graphql-playground-middleware-express";
 import * as jwt from 'jsonwebtoken';
-import { TokenType, refreshTokens  } from "./auth";
+import { TokenType, refreshTokens } from "./auth";
+import { redis } from "./reids";
+import { confirmEmail } from "./routes/confirmEmail";
 
 async function runServer(): Promise<void> {
   const schema = await generateSchema();
@@ -51,15 +53,19 @@ async function runServer(): Promise<void> {
 
   app.use(
     "/graphql",
-    graphqlHTTP(req => ({
+    graphqlHTTP((req, res) => ({
       schema,
       graphiql: true,
-      // context:{
-      //   user:req.headers['user'],
-      // },
+      context: {
+        req: req,
+        res: res,
+        redis: redis,
+      },
     }),
     ),
   );
+
+  app.get("/confirm/:id", confirmEmail);
 
   app.get(
     "/playground",

@@ -6,27 +6,40 @@ import {
     sendRefreshToken
 } from "../../auth";
 import { MyContext } from "../../MyContext";
-
+import { createEmailConfirmationLink } from "../../utilities/createEmailLinks";
+import { v4 } from "uuid";
+import { redis } from "../../reids";
+import { sendEmail } from "../../utilities/sendEmail";
 
 export const userController = {
     users: () => User.findAll(),
 
     createUser: async (user: User, context: MyContext) => {
+        const userExisted = await User.findOne({ where: { email: user.email } });
+        if (userExisted) throw new Error(`${user.email} already exists`);
+
         const hashedPassword = await hash(user.password, 12);
+        const userNew = await User.create({
+            id: v4(),
+            email: user.email,
+            password: hashedPassword,
+        });
 
-        const user_now = await User.findOne({ where: { email: user.email } });
-        if (user_now)  throw new Error(`${user.email} already exists`);
+        const url = context.req.protocol + "://" + context.req.get("host");
+        const link = await createEmailConfirmationLink(url, userNew.id, redis);
 
-        return User
-            .findOrCreate({
-                where: {
-                    email: user.email,
-                    password: hashedPassword,
-                }
-            })
-            .then(([user]) => {
-                return user.get({ plain: true });
-            });
+        await sendEmail(user.email, link);
+
+        return userNew;
+    },
+
+    deactivate_user: async (user: User) => {
+        try {
+            User.destroy({ where: { email: user.email } });
+            return { message: `Email of ${user.email} has been deleted!` };
+        } catch (Error) {
+            return { message: Error as string};
+        }
     },
 
     login: async (user: User, context: MyContext): Promise<LoginResponse> => {

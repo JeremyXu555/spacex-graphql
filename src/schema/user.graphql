@@ -11,11 +11,17 @@ type LoginResponse {
     access_token: String!
 }
 
+type DeactivationResponse {
+    message: String!
+}
+
 type Mutation {
     createUser (
         email: String!,
         password: String!,
     ): User
+
+    deactivateUser (email: String!): DeactivationResponse
 
     login(
         email: String!,
