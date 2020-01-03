@@ -13,6 +13,11 @@ import { TokenType, refreshTokens } from "./auth";
 import { redis } from "./reids";
 import { confirmEmail } from "./routes/confirmEmail";
 
+import * as session from "express-session";
+import * as connectRedis from "connect-redis";
+const RedisStore = connectRedis(session);
+
+
 async function runServer(): Promise<void> {
   const schema = await generateSchema();
   const app = express();
@@ -28,6 +33,21 @@ async function runServer(): Promise<void> {
       throw exception;
     }
   }
+
+  app.use(
+    session({
+      store: new RedisStore({ client: redis }),
+      secret: process.env.SESSION_SECRET,
+      name: "spacex-session",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+      }
+    })
+  );
 
   const addUser = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const token = req.headers['x-token'] as string;

@@ -16,6 +16,7 @@ import { launchResolver } from './launch.resolver';
 import { rocketResolver } from './rocket.resolver';
 import { dragonResolver } from './dragon.resolver';
 import { userResolver } from './user.resolver';
+import { meResolver } from './me.resolver';
 
 
 
@@ -30,8 +31,8 @@ async function schemaForTypeDef(filename: string): Promise<GraphQLSchema> {
 export async function generateSchema(): Promise<GraphQLSchema> {
 
     const schemaNames = fs
-            .readdirSync(__dirname)
-            .filter((file): boolean => path.extname(file) === '.graphql');
+        .readdirSync(__dirname)
+        .filter((file): boolean => path.extname(file) === '.graphql');
 
     const typeDefs = await Promise.all(schemaNames.map(schemaForTypeDef));
 
@@ -39,7 +40,7 @@ export async function generateSchema(): Promise<GraphQLSchema> {
     const schemaSDL = gql`${printSchema(mergedSchemas)}`;
     const schema = buildFederatedSchema([schemaSDL]);
 
-    const resolvers = [launchResolver, rocketResolver, dragonResolver, userResolver];
+    const resolvers = [launchResolver, rocketResolver, dragonResolver, userResolver, meResolver];
 
 
     resolvers.forEach((resolver): void => {

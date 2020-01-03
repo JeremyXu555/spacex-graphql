@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
 import { Redis } from "ioredis";
 
-export interface MyContext {
+interface Session {
+    userId?: string
+}
+
+export interface SpaceXContext {
     req: Request,
     res: Response,
     redis: Redis,
+    session: Session,
 }

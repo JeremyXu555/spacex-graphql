@@ -17,7 +17,8 @@ export const rocketController = {
                         company: rocket.company,
                     }
                 })
-                .then(([rocket]) => {
+                .then(
+                    ([rocket]) => {
                     return rocket.get({ plain: true });
                 });
 	}

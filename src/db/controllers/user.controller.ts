@@ -5,7 +5,7 @@ import {
     LoginResponse,
     sendRefreshToken
 } from "../../auth";
-import { MyContext } from "../../MyContext";
+import { SpaceXContext } from "../../types/SpaceXContext";
 import { createEmailConfirmationLink } from "../../utilities/createEmailLinks";
 import { v4 } from "uuid";
 import { redis } from "../../reids";
@@ -14,7 +14,7 @@ import { sendEmail } from "../../utilities/sendEmail";
 export const userController = {
     users: () => User.findAll(),
 
-    createUser: async (user: User, context: MyContext) => {
+    createUser: async (user: User, context: SpaceXContext) => {
         const userExisted = await User.findOne({ where: { email: user.email } });
         if (userExisted) throw new Error(`${user.email} already exists`);
 
@@ -38,11 +38,11 @@ export const userController = {
             User.destroy({ where: { email: user.email } });
             return { message: `Email of ${user.email} has been deleted!` };
         } catch (Error) {
-            return { message: Error as string};
+            return { message: Error as string };
         }
     },
 
-    login: async (user: User, context: MyContext): Promise<LoginResponse> => {
+    login: async (user: User, context: SpaceXContext):Promise<LoginResponse> => {
         const user_db = await User.findOne({ where: { email: user.email } });
         if (!user_db) {
             throw new Error("Could not find the user");
@@ -53,10 +53,13 @@ export const userController = {
             throw new Error("Wrong password");
         }
 
-        sendRefreshToken(context.res, user);
+        // sendRefreshToken(context.res, user);
+        const session = context.req.session;
+        session.userId = user_db.id;
 
         return {
-            access_token: createAccessToken(user)
+            // access_token: createAccessToken(user)
+            access_token: 'token'
         }
     }
 };
