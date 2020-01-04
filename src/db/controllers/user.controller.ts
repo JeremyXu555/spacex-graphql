@@ -10,6 +10,7 @@ import { createEmailConfirmationLink } from "../../utilities/createEmailLinks";
 import { v4 } from "uuid";
 import { redis } from "../../reids";
 import { sendEmail } from "../../utilities/sendEmail";
+import { userSessionPrefix } from "../../utilities/constants";
 
 export const userController = {
     users: () => User.findAll(),
@@ -42,7 +43,7 @@ export const userController = {
         }
     },
 
-    login: async (user: User, context: SpaceXContext):Promise<LoginResponse> => {
+    login: async (user: User, context: SpaceXContext): Promise<LoginResponse> => {
         const user_db = await User.findOne({ where: { email: user.email } });
         if (!user_db) {
             throw new Error("Could not find the user");
@@ -56,6 +57,10 @@ export const userController = {
         // sendRefreshToken(context.res, user);
         const session = context.req.session;
         session.userId = user_db.id;
+
+        if (context.req.sessionID) {
+            await context.redis.lpush(`${userSessionPrefix}${user_db.id}`, context.req.sessionID);
+        }
 
         return {
             // access_token: createAccessToken(user)

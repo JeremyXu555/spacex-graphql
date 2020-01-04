@@ -1,6 +1,7 @@
 import { userController } from "../db/controllers";
 import { User } from "../db/models";
 import { SpaceXContext } from "../types/SpaceXContext";
+import { userSessionPrefix, redisSessionPrefix } from "../utilities/constants";
 
 const userResolver = {
 	Query: {
@@ -21,15 +22,31 @@ const userResolver = {
 		login(root: any, args: User, context: any) {
 			return userController.login(args, context);
 		},
-		logout(root: any, args: any, context: SpaceXContext) {
+		async logout(root: any, args: any, context: SpaceXContext) {
 			const session = context.req.session;
 
-			new Promise((resolve, reject) => {
-				session.destroy(err => {
-					if (err) reject(err);
-					resolve(true);
-				})
-			});
+			if (session.userId) {
+				const sessionIds = await context.redis.lrange(
+					`${userSessionPrefix}${session.userId}`,
+					0,
+					-1
+				)
+
+				const promises = [];
+				for (let i = 0; i < sessionIds.length; i++) {
+					promises.push(context.redis.del(`${redisSessionPrefix}${sessionIds[i]}`));
+				}
+				promises.push(context.redis.del(`${userSessionPrefix}${session.userId}`));
+				await Promise.all(promises);
+				return true;
+			}
+			return false;
+			// new Promise((resolve, reject) => {
+			// 	session.destroy(err => {
+			// 		if (err) reject(err);
+			// 		resolve(true);
+			// 	})
+			// });
 		}
 	}
 };

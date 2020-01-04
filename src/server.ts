@@ -15,6 +15,7 @@ import { confirmEmail } from "./routes/confirmEmail";
 
 import * as session from "express-session";
 import * as connectRedis from "connect-redis";
+import { redisSessionPrefix } from "./utilities/constants";
 const RedisStore = connectRedis(session);
 
 
@@ -36,7 +37,10 @@ async function runServer(): Promise<void> {
 
   app.use(
     session({
-      store: new RedisStore({ client: redis }),
+      store: new RedisStore({ 
+        client: redis,
+        prefix: redisSessionPrefix
+       }),
       secret: process.env.SESSION_SECRET,
       name: "spacex-session",
       resave: false,
