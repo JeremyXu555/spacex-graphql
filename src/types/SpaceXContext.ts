@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Redis } from "ioredis";
 
-interface Session {
+interface Session extends Express.Session {
     userId?: string
 }
 
