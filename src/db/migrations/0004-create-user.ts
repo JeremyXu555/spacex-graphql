@@ -18,7 +18,7 @@ export const up = async (queryInterface: QueryInterface): Promise<void>  => {
             },
             password: {
                 type: new DataTypes.STRING(128),
-                allowNull: false,
+                allowNull: true,
             },
             confirmed:
             {

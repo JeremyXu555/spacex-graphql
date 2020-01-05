@@ -18,6 +18,9 @@ import * as connectRedis from "connect-redis";
 import { redisSessionPrefix } from "./utilities/constants";
 const RedisStore = connectRedis(session);
 
+import * as passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { User } from "./db/models";
 
 async function runServer(): Promise<void> {
   const schema = await generateSchema();
@@ -35,12 +38,50 @@ async function runServer(): Promise<void> {
     }
   }
 
+  passport.use(
+    new GoogleStrategy({
+      clientID: process.env.GOOGLE_OAUTH2_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_OAUTH2_CLIENT_SECRET,
+      callbackURL: "http://localhost:4000/auth/google/callback",
+    },
+      async function (_: any, __: any, profile: any, cb: any) {
+        let user = await User.findOrCreate({ where: { email: profile.emails[0].value } })
+          .then(([user, success]) => {
+            return user;
+          });
+
+        return cb(null, user);
+      }
+    )
+  );
+
+  passport.serializeUser(function (user, cb) {
+    cb(null, user);
+  });
+
+  passport.deserializeUser(function (obj, cb) {
+    cb(null, obj);
+  });
+
+  app.use(passport.initialize());
+
+  app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+
+  app.get('/auth/google/callback',
+    passport.authenticate('google', {}),
+    function (req, res) {
+      req.session.userId = (req.user as any).id;
+      console.log(req);
+      // implement login logic: create session in redis, etc.
+      res.redirect('/graphql');
+    });
+
   app.use(
     session({
-      store: new RedisStore({ 
+      store: new RedisStore({
         client: redis,
         prefix: redisSessionPrefix
-       }),
+      }),
       secret: process.env.SESSION_SECRET,
       name: "spacex-session",
       resave: false,

@@ -30,7 +30,7 @@ export class User extends Model {
             },
             password: {
                 type: new DataTypes.STRING(128),
-                allowNull: false,
+                allowNull: true,
             },
             confirmed:
             {

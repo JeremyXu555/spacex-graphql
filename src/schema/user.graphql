@@ -18,7 +18,7 @@ type DeactivationResponse {
 type Mutation {
     createUser (
         email: String!,
-        password: String!,
+        password: String,
     ): User
 
     deactivateUser (email: String!): DeactivationResponse
