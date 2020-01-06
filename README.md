@@ -7,3 +7,11 @@
 - jsonwebtoken: another way for authentication
 - subscriptions-transport-ws: subscription server for GraphQL subscriptions
 - pg & sequelize & umzug: Postgres database engine connection and migration
+
+##### Test dependancies:
+- supertest
+- faker
+- chai
+- chai-as-promised
+- sinon
+- sinon-chai
