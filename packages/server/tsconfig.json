@@ -16,9 +16,9 @@
         "allowSyntheticDefaultImports": true
     },
     "include": [
-        "packages/**/*"
+        "src/**/*"
     ],
     "exclude": [
-        "packages/**/node_modules/*",
+        "node_modules/*"
     ]
 }
