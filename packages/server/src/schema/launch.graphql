@@ -1,0 +1,29 @@
+# import Rocket from "rocket.graphql";
+
+type Launch {
+    id: Int!,
+    flight_number: String!,
+    launch_year: Int!,
+    mission_name: String!,
+    launch_success: Boolean!,
+    rocket_id: Int!,
+}
+
+type Query {
+    launches: [Launch]
+}
+
+type Mutation {
+    createLaunch(
+        id: Int!,
+        flight_number: String!,
+        launch_year: Int!,
+        mission_name: String!,
+        launch_success: Boolean!,
+        rocket_id: Int!,
+    ): Launch
+}
+
+type Subscription {
+    launchAdded: Launch
+}

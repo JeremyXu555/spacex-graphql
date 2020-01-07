@@ -1,0 +1,32 @@
+type Rocket {
+    id: Int!,
+    launch_ids: [Int!]!,
+    active: Boolean!,
+    stages: Int!,
+    boosters: Int!,
+    cost_per_launch: String,
+    success_rate_pct: Int,
+    first_flight: String,
+    country: String,
+    company: String,
+    test: String
+}
+
+type Query {
+    rockets: [Rocket]
+}
+
+type Mutation {
+    createRocket(
+        id: Int!,
+        launch_ids: [Int!]!,
+        active: Boolean!,
+        stages: Int!,
+        boosters: Int!,
+        cost_per_launch: String,
+        success_rate_pct: Int,
+        first_flight: String,
+        country: String,
+        company: String,
+    ): Rocket
+}
