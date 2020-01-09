@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
-import { Formik } from 'formik';
+import { Form as antdForm, Icon, Input, Button } from 'antd';
+import { Formik, Form } from 'formik';
 
 import "../../../index.css";
 
@@ -29,25 +29,25 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
           }}
         >
           {
-            ({ values, handleSubmit }) => (
-              <Form style={{ width: 400, margin: 'auto' }} onSubmit={handleSubmit}>
-                <Form.Item>
+            ({ values }) => (
+              <Form style={{ width: 400, margin: 'auto' }}>
+                <antdForm.Item>
                   <Input
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="First Name" value={values.firstName}
                   />
-                </Form.Item>
-                <Form.Item>
+                </antdForm.Item>
+                <antdForm.Item>
                   <Input
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="Last Name" value={values.lastName}
                   />
-                </Form.Item>
-                <Form.Item>
+                </antdForm.Item>
+                <antdForm.Item>
                   <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                   </Button>
-                </Form.Item>
+                </antdForm.Item>
                 <pre>
                   {JSON.stringify(values, null, 2)}
                 </pre>
