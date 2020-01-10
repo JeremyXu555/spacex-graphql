@@ -1,9 +1,20 @@
 import * as React from 'react';
-import { Form as antdForm, Icon, Input, Button, Checkbox } from 'antd';
-import { Formik, Form } from 'formik';
+import { 
+  Form as antdForm, 
+  Icon, 
+  Input, 
+  Button, 
+  Checkbox,
+  Radio,
+} from 'antd';
+import CheckboxGroup from 'antd/lib/checkbox/Group';
+
+import { 
+  Formik, 
+  Form,
+} from 'formik';
 
 import "../../../index.css";
-import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 export interface IRegisterViewProps {
@@ -45,6 +56,7 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
             lastName: '',
             crazy: false,
             hobbies: [],
+            offDay: '',
             perferTech: [{ language: '', framework: '' }],
             email: '',
             password: '',
@@ -93,6 +105,16 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                   options={hobbiesOptions} 
                   value={this.state.checkedHobbies}
                 />
+                <div>
+                  Which day during the week you want to work from home?
+                </div>
+                <Radio.Group name="offDay" defaultValue='Monday'>
+                  <Radio value='Monday' onChange={handleChange}>Monday</Radio>
+                  <Radio value='Tuesday' onChange={handleChange}>Tuesday</Radio>
+                  <Radio value='Wednesday' onChange={handleChange}>Wednesday</Radio>
+                  <Radio value='Thursday' onChange={handleChange}>Thursday</Radio>
+                  <Radio value='Friday' onChange={handleChange}>Friday</Radio>
+                </Radio.Group>
               </antdForm.Item>
               <antdForm.Item>
                 <Checkbox name="crazy" checked={values.crazy} onChange={handleChange}>crazy</Checkbox>
