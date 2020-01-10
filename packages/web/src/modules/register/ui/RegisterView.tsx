@@ -23,6 +23,14 @@ export interface IRegisterViewProps {
 const hobbiesOptions = ['work out', 'swimming', 'sex'];
 const defaultCheckedHobbies = [];
 
+const offDayOptions = [
+  { label: 'Monday', value: 'Monday' },
+  { label: 'Tuesday', value: 'Tuesday' },
+  { label: 'Wednesday', value: 'Wednesday' },
+  { label: 'Thursday', value: 'Thursday' },
+  { label: 'Friday', value: 'Friday' },
+];
+
 export default class RegisterView extends React.PureComponent<IRegisterViewProps> {
   
   state = {
@@ -56,7 +64,7 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
             lastName: '',
             crazy: false,
             hobbies: [],
-            offDay: '',
+            offDay: offDayOptions[0].value,
             perferTech: [{ language: '', framework: '' }],
             email: '',
             password: '',
@@ -108,13 +116,12 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                 <div>
                   Which day during the week you want to work from home?
                 </div>
-                <Radio.Group name="offDay" defaultValue='Monday'>
-                  <Radio value='Monday' onChange={handleChange}>Monday</Radio>
-                  <Radio value='Tuesday' onChange={handleChange}>Tuesday</Radio>
-                  <Radio value='Wednesday' onChange={handleChange}>Wednesday</Radio>
-                  <Radio value='Thursday' onChange={handleChange}>Thursday</Radio>
-                  <Radio value='Friday' onChange={handleChange}>Friday</Radio>
-                </Radio.Group>
+                <Radio.Group 
+                  name="offDay"
+                  defaultValue={values.offDay}
+                  onChange={handleChange}
+                  options={offDayOptions}
+                />
               </antdForm.Item>
               <antdForm.Item>
                 <Checkbox name="crazy" checked={values.crazy} onChange={handleChange}>crazy</Checkbox>
