@@ -2,18 +2,18 @@ import * as React from 'react';
 import {
   Form as antdForm,
   Icon,
-  Input,
   Button,
   Checkbox,
   Radio,
 } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import Select from '../../../components/Select';
+import Input from '../../../components/Input';
+
 import {
   Formik,
   Form,
   FieldArray,
-  Field,
 } from 'formik';
 
 import "../../../index.css";
@@ -69,7 +69,7 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
             crazy: false,
             hobbies: [],
             offDay: offDayOptions[0].value,
-            perferTech: [{ language: 'NodeJs', framework: 'Express', id: '' + Math.random() }],
+            preferTech: [{ language: 'NodeJs', framework: 'Express', id: '' + Math.random() }],
             email: '',
             password: '',
           }}
@@ -133,24 +133,21 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                       <div>
                         <Button onClick={() => {
                           arrayHelpers.push({
-                            language: 'C++',
                             framework: 'Privata',
+                            id: '' + Math.random(),
                           })
                         }}
-                          type='primary'
+                        type='primary'
                         >
                           Add preference
-                      </Button>
+                        </Button>
                         {
-                          values.perferTech.map((tech, index) => {
-                            console.log(index);
+                          values.preferTech.map((tech, index) => {
                             return (
                               <div key={tech.id}>
-                                <Field
-                                  placeholder="Language"
-                                  name={`preferTech.${index}.language`}
-                                  type="input"
-                                  as={Input}
+                                <Input
+                                name={`preferTech.${index}.language`}
+                                placeholder='language'
                                 />
                                 <Select name={`preferTech.${index}.framework`}>
                                   <Option value="Django">Django</Option>

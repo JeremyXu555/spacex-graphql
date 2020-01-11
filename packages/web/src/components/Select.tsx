@@ -2,11 +2,7 @@ import { Select as $Select } from "antd";
 import { Field, FieldProps } from "formik";
 import * as React from "react";
 import { SelectProps as $SelectProps, OptionProps } from "antd/lib/select";
-
-export interface FormikFieldProps {
-  name: string;
-  validate?: (value: any) => undefined | string | Promise<any>;
-}
+import { FormikFieldProps } from "./FieldProps";
 
 export type SelectProps = FormikFieldProps & $SelectProps & { children?: React.ReactNode };
 
