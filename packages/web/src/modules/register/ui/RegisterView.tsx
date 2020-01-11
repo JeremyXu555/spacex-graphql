@@ -6,10 +6,9 @@ import {
   Button,
   Checkbox,
   Radio,
-  Select,
 } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-
+import Select from '../../../components/Select';
 import {
   Formik,
   Form,
@@ -153,16 +152,11 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                                   type="input"
                                   as={Input}
                                 />
-                                <Field
-                                  name={`preferTech.${index}.framework`}
-                                  type="select"
-                                  as={Select}
-                                  onChange={handleChange}
-                                >
+                                <Select name={`preferTech.${index}.framework`}>
                                   <Option value="Django">Django</Option>
                                   <Option value="Express">Express</Option>
                                   <Option value="Formik">Formik</Option>
-                                </Field>
+                                </Select>
                                 <Button onClick={() => arrayHelpers.remove(index)}>
                                   x
                                 </Button>
