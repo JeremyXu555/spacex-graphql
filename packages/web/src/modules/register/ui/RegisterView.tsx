@@ -18,6 +18,7 @@ import {
 
 import "../../../index.css";
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import * as yup from 'yup';
 
 const Option = Select.Option;
 
@@ -34,6 +35,13 @@ const offDayOptions = [
   { label: 'Thursday', value: 'Thursday' },
   { label: 'Friday', value: 'Friday' },
 ];
+
+const validationSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .required()
+    .max(10)
+});
 
 export default class RegisterView extends React.PureComponent<IRegisterViewProps> {
 
@@ -80,108 +88,112 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
             console.log(data);
             setSubmitting(false);
           }}
+          validationSchema={validationSchema}
         >
           {
-            ({ values, handleChange }) => (
-              <Form style={{ width: 400, margin: 'auto' }}>
-                <antdForm.Item>
-                  <Input
-                    name="firstName"
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="First Name"
-                    value={values.firstName}
-                    onChange={handleChange}
-                  />
-                  <Input
-                    name="lastName"
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="Last Name"
-                    value={values.lastName}
-                    onChange={handleChange}
-                  />
-                </antdForm.Item>
-                <antdForm.Item>
-                  <div style={{ borderBottom: '1px solid #E9E9E9' }}>
-                    <Checkbox
-                      indeterminate={this.state.indeterminate}
-                      onChange={this.onCheckAllChange}
-                      checked={this.state.checkAll}
-                    >
-                      Check all
+          ({ values, handleChange, errors, touched }) => (
+            <Form style={{ width: 400, margin: 'auto' }}>
+              <antdForm.Item>
+                <Input
+                  name="firstName"
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="First Name"
+                  value={values.firstName}
+                  onChange={handleChange}
+                />
+                {errors.firstName && touched.firstName ? (
+                  <div>{errors.firstName}</div>
+                ) : null}
+                <Input
+                  name="lastName"
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  placeholder="Last Name"
+                  value={values.lastName}
+                  onChange={handleChange}
+                />
+              </antdForm.Item>
+              <antdForm.Item>
+                <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+                  <Checkbox
+                    indeterminate={this.state.indeterminate}
+                    onChange={this.onCheckAllChange}
+                    checked={this.state.checkAll}
+                  >
+                    Check all
                   </Checkbox>
-                  </div>
-                  Hobbies:
-                <CheckboxGroup
-                    name="hobbies"
-                    onChange={this.onHobbiesChange}
-                    options={hobbiesOptions}
-                    value={this.state.checkedHobbies}
-                  />
-                  <div>
-                    Which day during the week you want to work from home?
                 </div>
-                  <Radio.Group
-                    name="offDay"
-                    defaultValue={values.offDay}
-                    onChange={handleChange}
-                    options={offDayOptions}
-                  />
-                </antdForm.Item>
-                <FieldArray name="preferTech">
-                  {
-                    arrayHelpers => (
-                      <div>
-                        <Button onClick={() => {
-                          arrayHelpers.push({
-                            framework: 'Privata',
-                            id: '' + Math.random(),
-                          })
-                        }}
+                Hobbies:
+                <CheckboxGroup
+                  name="hobbies"
+                  onChange={this.onHobbiesChange}
+                  options={hobbiesOptions}
+                  value={this.state.checkedHobbies}
+                />
+                <div>
+                  Which day during the week you want to work from home?
+                </div>
+                <Radio.Group
+                  name="offDay"
+                  defaultValue={values.offDay}
+                  onChange={handleChange}
+                  options={offDayOptions}
+                />
+              </antdForm.Item>
+              <FieldArray name="preferTech">
+                {
+                  arrayHelpers => (
+                    <div>
+                      <Button onClick={() => {
+                        arrayHelpers.push({
+                          framework: 'Privata',
+                          id: '' + Math.random(),
+                        })
+                      }}
                         type='primary'
-                        >
-                          Add preference
+                      >
+                        Add preference
                         </Button>
-                        {
-                          values.preferTech.map((tech, index) => {
-                            return (
-                              <div key={tech.id}>
-                                <Input
+                      {
+                        values.preferTech.map((tech, index) => {
+                          return (
+                            <div key={tech.id}>
+                              <Input
                                 name={`preferTech.${index}.language`}
                                 placeholder='language'
-                                />
-                                <Select name={`preferTech.${index}.framework`}>
-                                  <Option value="Django">Django</Option>
-                                  <Option value="Express">Express</Option>
-                                  <Option value="Formik">Formik</Option>
-                                </Select>
-                                <Button onClick={() => arrayHelpers.remove(index)}>
-                                  x
+                              />
+                              <Select name={`preferTech.${index}.framework`}>
+                                <Option value="Django">Django</Option>
+                                <Option value="Express">Express</Option>
+                                <Option value="Formik">Formik</Option>
+                              </Select>
+                              <Button type="danger" onClick={() => arrayHelpers.remove(index)}>
+                                x
                                 </Button>
-                              </div>
-                            );
-                          })
-                        }
-                      </div>
-                    )
-                  }
-                </FieldArray>
-                <antdForm.Item>
-                  <Checkbox name="crazy" checked={values.crazy} onChange={handleChange}>crazy</Checkbox>
-                  <a className="login-form-forgot" href="/">Forget password</a>
-                  <div></div>
-                  <Button type="primary" htmlType="submit" className="login-form-button">
-                    Log in
+                            </div>
+                          );
+                        })
+                      }
+                    </div>
+                  )
+                }
+              </FieldArray>
+              <antdForm.Item>
+                <Checkbox name="crazy" checked={values.crazy} onChange={handleChange}>crazy</Checkbox>
+                <a className="login-form-forgot" href="/">Forget password</a>
+                <div></div>
+                <Button type="primary" htmlType="submit" className="login-form-button">
+                  Log in
                 </Button>
-                  Or <a href="/">Register Now!</a>
-                </antdForm.Item>
-                <pre>
-                  {JSON.stringify(values, null, 2)}
-                </pre>
-              </Form>
-            )
-          }
+                Or <a href="/">Register Now!</a>
+              </antdForm.Item>
+              <pre>
+                {JSON.stringify(values, null, 2)}
+              </pre>
+            </Form>
+          )
+        }
         </Formik>
-      </div>
+      </div >
     );
   }
 }
