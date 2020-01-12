@@ -43,7 +43,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "src/components/Example-materialui-formik.tsx"
   ],
   "include": [
     "src"
