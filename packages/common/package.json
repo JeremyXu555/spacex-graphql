@@ -1,0 +1,23 @@
+{
+  "name": "@jxu/common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.5",
+    "@types/yup": "^0.26.27"
+
+  },
+  "dependencies": {
+    "yup": "^0.28.0"
+  }
+}
