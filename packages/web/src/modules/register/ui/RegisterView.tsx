@@ -102,7 +102,6 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="First Name"
                     value={values.firstName}
-                    onChange={handleChange}
                   />
                   {errors.firstName && touched.firstName ? (
                     <div>{errors.firstName}</div>
@@ -112,7 +111,6 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="Last Name"
                     value={values.lastName}
-                    onChange={handleChange}
                   />
                 </antdForm.Item>
                 <antdForm.Item>
