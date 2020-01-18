@@ -21,7 +21,7 @@ import {
 
 import "../../../index.css";
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-import * as yup from 'yup';
+import { userValidation } from '@jxu/common';
 
 const Option = Select.Option;
 
@@ -38,13 +38,6 @@ const offDayOptions = [
   { label: 'Thursday', value: 'Thursday' },
   { label: 'Friday', value: 'Friday' },
 ];
-
-const validationSchema = yup.object().shape({
-  firstName: yup
-    .string()
-    .required()
-    .max(10)
-});
 
 export default class RegisterView extends React.PureComponent<IRegisterViewProps> {
 
@@ -91,7 +84,7 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
             console.log(data);
             setSubmitting(false);
           }}
-          validationSchema={validationSchema}
+          validationSchema={userValidation}
         >
           {
             ({ values, handleChange, errors, touched }) => (
@@ -112,6 +105,9 @@ export default class RegisterView extends React.PureComponent<IRegisterViewProps
                     placeholder="Last Name"
                     value={values.lastName}
                   />
+                  {errors.lastName && touched.lastName ? (
+                    <div>{errors.lastName}</div>
+                  ) : null}
                 </antdForm.Item>
                 <antdForm.Item>
                   <div style={{ borderBottom: '1px solid #E9E9E9' }}>

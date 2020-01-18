@@ -10,7 +10,7 @@ export const registerPasswordValidation = yup
   .max(255)
   .required();
 
-export const validUserSchema = yup.object().shape({
+export const userValidation = yup.object().shape({
   firstName: yup
     .string()
     .required()
