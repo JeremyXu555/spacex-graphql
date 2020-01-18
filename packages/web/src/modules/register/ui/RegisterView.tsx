@@ -26,6 +26,7 @@ import { userValidation } from '@jxu/common';
 const Option = Select.Option;
 
 export interface IRegisterViewProps {
+  submit: () => {}
 }
 
 const hobbiesOptions = ['work out', 'swimming', 'sex'];
